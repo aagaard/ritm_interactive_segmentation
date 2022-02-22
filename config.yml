@@ -8,6 +8,7 @@ DAVIS_PATH: "./datasets/DAVIS"
 COCO_MVAL_PATH: "./datasets/COCO_MVal"
 
 # Train datasets
+CVAT_PATH: "./datasets/CVAT"
 SBD_PATH: "./datasets/SBD"
 COCO_PATH: "./datasets/coco2017"
 LVIS_PATH: "./datasets/LVIS"
