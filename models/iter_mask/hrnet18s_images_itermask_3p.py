@@ -1,6 +1,6 @@
 from isegm.utils.exp_imports.default import *
-MODEL_NAME = 'cocolvis_hrnet18s'
 
+MODEL_NAME = 'cocolvis_hrnet18s'
 
 def main(cfg):
     model, model_cfg = init_model(cfg)
@@ -9,11 +9,11 @@ def main(cfg):
 
 def init_model(cfg):
     model_cfg = edict()
-    model_cfg.crop_size = (320, 480)
+    model_cfg.crop_size = (720, 1280)
     model_cfg.num_max_points = 24
 
     model = HRNetModel(width=18, ocr_width=48, small=True, with_aux_output=True, use_leaky_relu=True,
-                       use_rgb_conv=False, use_disks=True, norm_radius=5,
+                       use_rgb_conv=True, use_disks=True, norm_radius=5,
                        with_prev_mask=True)
 
     model.to(cfg.device)
@@ -35,7 +35,6 @@ def train(model, cfg, model_cfg):
     loss_cfg.instance_aux_loss_weight = 0.4
 
     train_augmentator = Compose([
-        UniformRandomResize(scale_range=(0.75, 1.40)),
         HorizontalFlip(),
         PadIfNeeded(min_height=crop_size[0], min_width=crop_size[1], border_mode=0),
         RandomCrop(*crop_size),
@@ -52,20 +51,20 @@ def train(model, cfg, model_cfg):
                                        merge_objects_prob=0.15,
                                        max_num_merged_objects=2)
 
-    trainset = ImagesDirDataset(
+    trainset = ArgosImagesDirDataset(
         cfg.CVAT_PATH,
-        split='train',
+        # split='train',
         augmentator=train_augmentator,
         min_object_area=1000,
         keep_background_prob=0.05,
         points_sampler=points_sampler,
         epoch_len=30000,
-        stuff_prob=0.30
+        # stuff_prob=0.30
     )
 
-    valset = ImagesDirDataset(
+    valset = ArgosImagesDirDataset(
         cfg.CVAT_PATH,
-        split='val',
+        # split='val',
         augmentator=val_augmentator,
         min_object_area=1000,
         points_sampler=points_sampler,

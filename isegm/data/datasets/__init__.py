@@ -8,5 +8,6 @@ from .lvis import LvisDataset
 from .openimages import OpenImagesDataset
 from .sbd import SBDDataset, SBDEvaluationDataset
 from .images_dir import ImagesDirDataset
+from .argos_images_dir import ArgosImagesDirDataset
 from .ade20k import ADE20kDataset
 from .pascalvoc import PascalVocDataset
